@@ -4,12 +4,12 @@ const wsUtils = require('./wss');
 exports.convert = async (id, sourceFilename, destFilename, baseUrl) => {
     try {
         console.log(__dirname);
-        let cmd = "ffmpeg -i " + sourceFilename + " -preset ultrafast " + destFilename;
-        shell.cd('files');
-        shell.cd(id);
-        shell.exec('ls -a');
+        let cmd = "ffmpeg -y -i files/" + id  + "/" + sourceFilename + " -preset ultrafast files/" + id  + "/" + destFilename;
+        // shell.cd('files');
+        // shell.cd(id);
+        // shell.exec('ls -a');
         shell.exec(cmd);
-        shell.cd('../../');
+        // shell.cd('../../');
         let fileUrl = baseUrl + '/files/' + id + '/' + destFilename;
         wsUtils.send(id, fileUrl);
     } catch (e) {

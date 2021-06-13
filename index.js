@@ -58,7 +58,7 @@ app.post('/upload-media', async (req, res) => {
                     name: media.name,
                     mimetype: media.mimetype,
                     size: media.size,
-                    media: baseUrl + '/' + id + '/' + destFilename
+                    media: baseUrl + '/files/' + id + '/' + destFilename
                 }
             });
         }

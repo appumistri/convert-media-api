@@ -48,7 +48,7 @@ app.post('/upload-media', async (req, res) => {
             media.mv('files/' + id + '/' + srcFilename);
             let destFilename = srcFilename.split('.')[0] + '.' + req.body.convertTo;
             let baseUrl = 'http://' + req.hostname;
-            converter.convert(id, srcFilename, destFilename, baseUrl);
+            await converter.convert(id, srcFilename, destFilename, baseUrl);
 
             //send response
             res.send({
@@ -57,7 +57,8 @@ app.post('/upload-media', async (req, res) => {
                     processingId: id,
                     name: media.name,
                     mimetype: media.mimetype,
-                    size: media.size
+                    size: media.size,
+                    media: baseUrl + '/' + id + '/' + destFilename
                 }
             });
         }

@@ -6,6 +6,7 @@ const { uuid } = require('uuidv4');
 const converter = require('./converter');
 const WebSocket = require('ws');
 const wsUtils = require('./wss');
+const NRP = require('node-redis-pubsub');
 
 const app = express();
 
@@ -32,6 +33,17 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', ws => wsUtils.connect(ws));
 
+/* Redis pubsub config */
+const config = {
+    url: process.env.REDIS_URL
+};
+
+const nrp = new NRP(config);
+
+nrp.on('start-process', data => {
+    converter.convert(data.id, data.srcFilename, data.destFilename, data.baseUrl);
+});
+
 app.post('/upload-media', async (req, res) => {
     try {
         if (!req.files) {
@@ -43,12 +55,12 @@ app.post('/upload-media', async (req, res) => {
             let media = req.files.media;
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
-            let id = req.body.id; //uuid();
+            let id = req.body.id || uuid();
             let srcFilename = media.name;
             media.mv('files/' + id + '/' + srcFilename);
             let destFilename = srcFilename.split('.')[0] + '.' + req.body.convertTo;
             let baseUrl = 'http://' + req.hostname;
-            await converter.convert(id, srcFilename, destFilename, baseUrl);
+            nrp.emit('start-process', { id: id, srcFilename: srcFilename, destFilename: destFilename, baseUrl: baseUrl });
 
             //send response
             res.send({
@@ -57,8 +69,7 @@ app.post('/upload-media', async (req, res) => {
                     processingId: id,
                     name: media.name,
                     mimetype: media.mimetype,
-                    size: media.size,
-                    media: baseUrl + '/files/' + id + '/' + destFilename
+                    size: media.size
                 }
             });
         }

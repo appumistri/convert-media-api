@@ -1,7 +1,7 @@
 var shell = require('shelljs');
 const wsUtils = require('./wss');
 
-exports.convert = async (id, sourceFilename, destFilename, baseUrl) => {
+exports.convert = (id, sourceFilename, destFilename, baseUrl) => {
     try {
         console.log(__dirname);
         let cmd = "ffmpeg -y -i " + sourceFilename + " -preset ultrafast " + destFilename;

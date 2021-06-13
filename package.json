@@ -1,0 +1,29 @@
+{
+  "name": "convert-media-api",
+  "version": "1.0.0",
+  "description": "api to convert media",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appumistri/convert-media-api.git"
+  },
+  "author": "appu.mistry@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/appumistri/convert-media-api/issues"
+  },
+  "homepage": "https://github.com/appumistri/convert-media-api#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "shelljs": "^0.8.4",
+    "uuidv4": "^6.2.10",
+    "ws": "^7.4.6"
+  }
+}

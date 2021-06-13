@@ -43,7 +43,7 @@ app.post('/upload-media', async (req, res) => {
             let media = req.files.media;
 
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
-            let id = uuid();
+            let id = req.body.id; //uuid();
             let srcFilename = media.name;
             media.mv('./files/' + id + '/' + srcFilename);
             let destFilename = srcFilename.split('.')[0] + '.' + req.body.convertTo;

@@ -37,8 +37,7 @@ wss.on('connection', ws => wsUtils.connect(ws));
 
 /* Redis config */
 var config = {
-    port: 6379,
-    host: '127.0.0.1'
+    url: process.env.REDIS_URL
 };
 
 var nrp = new NRP(config);

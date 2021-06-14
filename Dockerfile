@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
 RUN apt-get update
-RUN apt-get install ffmpeg -y
+RUN apt-get install ffmpeg redis-server -y
 
-CMD npm start
+CMD redis-server && npm start

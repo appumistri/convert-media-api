@@ -6,7 +6,8 @@ const { uuid } = require('uuidv4');
 const converter = require('./converter');
 const WebSocket = require('ws');
 const wsUtils = require('./wss');
-const NRP = require('node-redis-pubsub');
+var NRP = require('node-redis-pubsub');
+
 
 const app = express();
 
@@ -33,14 +34,17 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', ws => wsUtils.connect(ws));
 
-/* Redis pubsub config */
-const config = {
-    url: process.env.REDIS_URL
+
+/* Redis config */
+var config = {
+    port: 6379,
+    host: '127.0.0.1'
 };
 
-const nrp = new NRP(config);
+var nrp = new NRP(config);
 
-nrp.on('start-process', data => {
+nrp.on('start_media_conversion', (data) => {
+    console.log(data);
     converter.convert(data.id, data.srcFilename, data.destFilename, data.baseUrl);
 });
 
@@ -60,7 +64,8 @@ app.post('/upload-media', async (req, res) => {
             media.mv('files/' + id + '/' + srcFilename);
             let destFilename = srcFilename.split('.')[0] + '.' + req.body.convertTo;
             let baseUrl = 'http://' + req.hostname;
-            nrp.emit('start-process', { id: id, srcFilename: srcFilename, destFilename: destFilename, baseUrl: baseUrl });
+
+            nrp.emit('start_media_conversion', { id: id, srcFilename: srcFilename, destFilename: destFilename, baseUrl: baseUrl });
 
             //send response
             res.send({

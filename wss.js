@@ -27,8 +27,8 @@ exports.convert = data => {
         let cmd = "ffmpeg -y -i " + data.srcFilename + " -preset ultrafast " + data.destFilename;
         shell.cd('files');
         shell.cd(data.id);
-        // shell.exec('ls -a');
-        // console.log(cmd);
+        shell.exec('ls -a');
+        console.log(cmd);
         shell.exec(cmd);
         shell.cd('../../');
         let fileUrl = data.baseUrl + '/files/' + data.id + '/' + data.destFilename;

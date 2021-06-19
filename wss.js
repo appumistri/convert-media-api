@@ -24,7 +24,7 @@ function send(id, fileUrl) {
 exports.convert = data => {
     try {
         console.log(JSON.stringify(data));
-        let cmd = "ffmpeg -y -i " + data.srcFilename + " -preset ultrafast " + data.destFilename;
+        let cmd = "ffmpeg -y -i " + data.srcFilename + " -flags +global_header -preset ultrafast " + data.destFilename;
         shell.cd('files');
         shell.cd(data.id);
         shell.exec('ls -a');

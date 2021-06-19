@@ -3,7 +3,7 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { uuid } = require('uuidv4');
-const converter = require('./converter');
+// const converter = require('./converter');
 const WebSocket = require('ws');
 const wsUtils = require('./wss');
 var NRP = require('node-redis-pubsub');
@@ -34,18 +34,20 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', ws => wsUtils.connect(ws));
 
+wss.on('start_media_conversion', data => wsUtils.convert(data));
+
 
 /* Redis config */
-var config = {
-    url: process.env.REDIS_URL
-};
+// var config = {
+//     url: process.env.REDIS_URL
+// };
 
-var nrp = new NRP(config);
+// var nrp = new NRP(config);
 
-nrp.on('start_media_conversion', (data) => {
-    console.log(data);
-    converter.convert(data.id, data.srcFilename, data.destFilename, data.baseUrl);
-});
+// nrp.on('start_media_conversion', (data) => {
+//     console.log(data);
+//     converter.convert(data.id, data.srcFilename, data.destFilename, data.baseUrl);
+// });
 
 app.post('/upload-media', async (req, res) => {
     try {
@@ -64,7 +66,9 @@ app.post('/upload-media', async (req, res) => {
             let destFilename = srcFilename.split('.')[0] + '.' + req.body.convertTo;
             let baseUrl = 'http://' + req.hostname;
 
-            nrp.emit('start_media_conversion', { id: id, srcFilename: srcFilename, destFilename: destFilename, baseUrl: baseUrl });
+            // nrp.emit('start_media_conversion', { id: id, srcFilename: srcFilename, destFilename: destFilename, baseUrl: baseUrl });
+
+            wss.emit('start_media_conversion', { id: id, srcFilename: srcFilename, destFilename: destFilename, baseUrl: baseUrl });
 
             //send response
             res.send({

@@ -1,4 +1,4 @@
-var shell = require('shelljs');
+const shell = require('shelljs');
 const wssClients = [];
 
 exports.connect = ws => {
@@ -24,15 +24,16 @@ function send(id, fileUrl) {
 exports.convert = data => {
     try {
         console.log(JSON.stringify(data));
-        let cmd = "ffmpeg -y -i " + data.srcFilename + " -preset ultrafast " + data.destFilename;
+        let srcFileUrl = data.baseUrl + '/files/' + data.id + '/' + data.srcFilename;
+        let cmd = "ffmpeg -y -i " + srcFileUrl + " -preset ultrafast " + data.destFilename;
         shell.cd('files');
         shell.cd(data.id);
         shell.exec('ls -a');
         console.log(cmd);
         shell.exec(cmd);
         shell.cd('../../');
-        let fileUrl = data.baseUrl + '/files/' + data.id + '/' + data.destFilename;
-        send(data.id, fileUrl);
+        let destFileUrl = data.baseUrl + '/files/' + data.id + '/' + data.destFilename;
+        send(data.id, destFileUrl);
     } catch (e) {
         send(data.id, 'media conversion failed');
         console.log(e);

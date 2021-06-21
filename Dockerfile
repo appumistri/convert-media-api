@@ -1,6 +1,9 @@
 FROM ubuntu:18.04
 
-# RUN apt update
-# RUN apt install ffmpeg -y
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y nodejs npm ffmpeg
 
-CMD npm start
+COPY . .
+
+CMD npm install && npm start

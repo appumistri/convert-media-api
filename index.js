@@ -6,7 +6,9 @@ const { uuid } = require('uuidv4');
 // const converter = require('./converter');
 const WebSocket = require('ws');
 const wsUtils = require('./wss');
-var NRP = require('node-redis-pubsub');
+// var NRP = require('node-redis-pubsub');
+const fs = require('fs');
+
 
 
 const app = express();
@@ -62,6 +64,14 @@ app.post('/upload-media', async (req, res) => {
             //Use the mv() method to place the file in upload directory (i.e. "uploads")
             let id = req.body.id || uuid();
             let srcFilename = media.name;
+
+            if (!fs.existsSync('files')) {
+                fs.mkdirSync('files');
+                if (!fs.existsSync(id)) {
+                    fs.mkdirSync(id);
+                }
+            }
+
             media.mv('files/' + id + '/' + srcFilename);
             let destFilename = srcFilename.split('.')[0] + '.' + req.body.convertTo;
             let baseUrl = 'http://' + req.hostname;

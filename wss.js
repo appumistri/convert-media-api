@@ -24,7 +24,7 @@ function send(id, fileUrl) {
 exports.convert = data => {
     try {
         console.log(JSON.stringify(data));
-        let srcFileUrl = data.baseUrl + '/files/' + data.id + '/' + data.srcFilename;
+        let srcFileUrl = 'https://convert-media-api.herokuapp.com/files/' + data.id + '/' + data.srcFilename;
         let cmd = "ffmpeg -y -i " + srcFileUrl + " -preset ultrafast " + data.destFilename;
         shell.cd('files');
         shell.cd(data.id);

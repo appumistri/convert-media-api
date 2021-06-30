@@ -72,7 +72,7 @@ app.post('/upload-media', async (req, res) => {
                 }
             }
 
-            media.mv('files/' + id + '/' + srcFilename);
+            await media.mv('files/' + id + '/' + srcFilename);
             let destFilename = srcFilename.split('.')[0] + '.' + req.body.convertTo;
             let baseUrl = 'http://' + req.hostname;
 

@@ -74,7 +74,7 @@ app.post('/upload-media', async (req, res) => {
 
             await media.mv('files/' + id + '/' + srcFilename);
             let destFilename = srcFilename.split('.')[0] + '.' + req.body.convertTo;
-            let baseUrl = 'http://' + req.hostname;
+            let baseUrl = 'https://' + req.hostname;
 
             // nrp.emit('start_media_conversion', { id: id, srcFilename: srcFilename, destFilename: destFilename, baseUrl: baseUrl });
 

@@ -22,6 +22,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
+    "serverless-google-cloudfunctions": "^4.5.0",
     "shelljs": "^0.8.4",
     "uuidv4": "^6.2.10",
     "ws": "^7.4.6"
